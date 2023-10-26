@@ -1,28 +1,57 @@
 .description {
+    margin-top: 30px;
     text-align: center;
-    background-color: #e1d9ce;
-    padding: 10px;
-    font-family: 'Open Sans', sans-serif;
+    background-color: #d8c8bc;
+    padding: 80px;
+    font-family: Lato, Montserrat, sans-serif;
+    font-size: 25px;
 }
+
 body {
     background-color: #cab08f;
-    font-family: Arial, sans-serif;
-    margin-top: 20px;
+    font-family: Lato, Montserrat, sans-serif;
+    margin-top: 50px;
+    font-size: 40px;
 }
-button {
-    display: block;
-    margin-top: 10px;
-    margin-left: 18px;
-    padding: 8px 16px;
+
+.button-container {
+    text-align: center;
+}
+
+.button-container button {
+    font-family: Lato, Montserrat, sans-serif;
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 10px 20px;
     background-color: #744b05;
     color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
-button.active {
+
+.button-container button.active {
     background-color: #d8c8bc;
 }
-button:hover {
+
+.button-container button:hover {
     background-color: #744B0560;
+}
+
+.clock {
+    width: 300px;
+    height: 100px;
+    text-align: center;
+    font-size: 40px;
+    color: #462904;
+    background-color: #d8c8bc;
+    border: 2px solid #744b05;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Lato, Montserrat, sans-serif;
 }

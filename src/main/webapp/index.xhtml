@@ -10,15 +10,21 @@
     <h:outputStylesheet name="css/index.css"/>
 </h:head>
 <h:body>
-
-    <div class="description">
-        <p>Authors: Mitina Tatiana and Manuhin Konstantin</p>
-        <p>Group: P3221</p>
-        <p>Variant: 2189</p>
-    </div>
-    <div id="time"></div>
-    <h:button value="На главную" outcome="toMain" id="toMain"/>
-
+    <h:form>
+        <div class="clock">
+            <div id="time">
+                <p:clock pattern="HH:mm:ss"/>
+            </div>
+        </div>
+        <div class="description">
+            <p>Authors: Mitina Tatiana and Manuhin Konstantin</p>
+            <p>Group: P3221</p>
+            <p>Variant: 2189</p>
+        </div>
+        <div class="button-container">
+            <p:commandButton value="Main" action="toMain" ajax="false"/>
+        </div>
+    </h:form>
 </h:body>
 <h:outputScript name="js/time.js"/>
 </html>
