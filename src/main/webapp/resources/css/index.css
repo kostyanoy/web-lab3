@@ -1,0 +1,28 @@
+.description {
+    text-align: center;
+    background-color: #e1d9ce;
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif;
+}
+body {
+    background-color: #cab08f;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+}
+button {
+    display: block;
+    margin-top: 10px;
+    margin-left: 18px;
+    padding: 8px 16px;
+    background-color: #744b05;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button.active {
+    background-color: #d8c8bc;
+}
+button:hover {
+    background-color: #744B0560;
+}
