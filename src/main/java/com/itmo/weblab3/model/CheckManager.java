@@ -1,8 +1,8 @@
-package model;
+package com.itmo.weblab3.model;
 
 import com.itmo.weblab3.beans.PointBean;
-import hibernate.CheckEntity;
-import hibernate.HibernateUtils;
+import com.itmo.weblab3.hibernate.CheckEntity;
+import com.itmo.weblab3.hibernate.HibernateUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.RollbackException;
@@ -17,10 +17,9 @@ import java.util.List;
 @ApplicationScoped
 class CheckManager implements CheckManagerInterface {
 
-    List<CheckEntity> stub = new ArrayList<>() {{
-        CheckEntity.builder().x(1);
-        CheckEntity.builder().y(1);
-        CheckEntity.builder().r(1);
+    private static final List<CheckEntity> stub = new ArrayList<>() {{
+        add(CheckEntity.builder().x(1).build());
+        add(CheckEntity.builder().y(1).build());
     }};
 
     @Override
@@ -53,7 +52,9 @@ class CheckManager implements CheckManagerInterface {
 
         // try to save to database
         try (var session = HibernateUtils.getSessionFactory().openSession()) {
+            var transaction = session.beginTransaction();
             session.persist(entity);
+            transaction.commit();
             return true;
         } catch (HibernateException e) {
             System.out.println(e.getMessage());

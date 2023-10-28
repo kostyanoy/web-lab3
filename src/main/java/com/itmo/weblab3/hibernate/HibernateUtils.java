@@ -1,4 +1,4 @@
-package hibernate;
+package com.itmo.weblab3.hibernate;
 
 import lombok.Getter;
 import org.hibernate.SessionFactory;

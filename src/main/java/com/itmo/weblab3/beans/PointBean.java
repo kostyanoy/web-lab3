@@ -1,6 +1,6 @@
 package com.itmo.weblab3.beans;
 
-import hibernate.CheckEntity;
+import com.itmo.weblab3.hibernate.CheckEntity;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -8,7 +8,7 @@ import jakarta.inject.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import model.CheckManagerInterface;
+import com.itmo.weblab3.model.CheckManagerInterface;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,12 +42,7 @@ public class PointBean implements Serializable {
         return checkManager.deletePoints(sessionId);
     }
 
-    public List<CheckEntity> getPoints() {
-
-        var r = checkManager.getAllPoints(sessionId);
-        for (var e : r) {
-            System.out.println(e);
-        }
-        return r;
+    public List<CheckEntity> receivePoints() {
+        return checkManager.getAllPoints(sessionId);
     }
 }

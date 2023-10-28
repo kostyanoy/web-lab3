@@ -1,7 +1,7 @@
-package model;
+package com.itmo.weblab3.model;
 
 import com.itmo.weblab3.beans.PointBean;
-import hibernate.CheckEntity;
+import com.itmo.weblab3.hibernate.CheckEntity;
 
 import java.util.List;
 

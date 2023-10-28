@@ -1,5 +1,5 @@
 import com.itmo.weblab3.beans.PointBean;
-import hibernate.HibernateUtils;
+import com.itmo.weblab3.hibernate.HibernateUtils;
 import org.hibernate.Session;
 
 public class TestMain {

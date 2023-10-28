@@ -56,10 +56,10 @@
                             <f:selectItem itemValue="3" itemLabel="3" />
                         </h:selectOneMenu>
 
-                        <h:commandButton value="Submit" action="#{pointBean.savePoint}"/>
+                        <h:commandButton value="Submit" action="#{pointBean.savePoint()}"/>
                     </h:form>
 
-                    <h:commandButton value="Удалить" action="#{pointBean.deletePoints}" />
+                    <h:commandButton value="Удалить" action="#{pointBean.deletePoints()}" />
                 </div>
                 <!--REPLACE-->
             </div>
@@ -71,7 +71,7 @@
 <!--тут будет таблица-->
     <!--REPLACE-->
     <h1>CheckEntity Table</h1>
-    <h:dataTable value="#{pointBean.points}" var="check">
+    <h:dataTable value="#{pointBean.receivePoints()}" var="check">
         <h:column>
             <f:facet name="header">X</f:facet>
             <h:outputText value="#{check.x}" />

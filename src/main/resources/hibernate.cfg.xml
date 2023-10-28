@@ -29,7 +29,7 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
 
     <!-- Mapping files -->
-    <mapping class="com.itmo.weblab3.beans.PointBean"/>
+    <mapping class="com.itmo.weblab3.hibernate.CheckEntity"/>
 
 
   </session-factory>

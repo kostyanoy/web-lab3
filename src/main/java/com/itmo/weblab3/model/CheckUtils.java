@@ -1,4 +1,4 @@
-package model;
+package com.itmo.weblab3.model;
 
 // class with specific conditions for image
 public class CheckUtils {

@@ -1,4 +1,4 @@
-package hibernate;
+package com.itmo.weblab3.hibernate;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="checks")
+@Table
 public class CheckEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +28,5 @@ public class CheckEntity implements Serializable {
     private long executionTime;
     private Date checkDate;
     private boolean result;
-    private boolean deleted;
+    private boolean isDeleted;
 }
