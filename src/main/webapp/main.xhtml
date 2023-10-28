@@ -10,7 +10,7 @@
 <h:body>
     <h:form id="mainForm">
         <div class="window">
-            <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;" rendered="false">
+            <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
                 <svg width="400" height="400">
                     <line x1="0" y1="200" x2="400" y2="200" style="stroke: black; stroke-width: 2"/>
                     <line x1="200" y1="0" x2="200" y2="400" style="stroke: black; stroke-width: 2"/>
@@ -44,7 +44,7 @@
                 <div class="example">
                     <h:form>
                         <h:outputLabel for="x">Enter X:</h:outputLabel>
-                        <h:inputText id="x" value="#{pointBean.x}" />
+                        <h:inputText id="x" value="#{pointBean.x}" /> <!-- To get field from pointBean-->
 
                         <h:outputLabel for="y">Enter Y:</h:outputLabel>
                         <h:inputText id="y" value="#{pointBean.y}" />
@@ -71,7 +71,7 @@
 <!--тут будет таблица-->
     <!--REPLACE-->
     <h1>CheckEntity Table</h1>
-    <h:dataTable value="#{pointBean.receivePoints()}" var="check">
+    <h:dataTable value="#{pointBean.receivePoints()}" var="check">  <!-- To get list of previous attempts -->
         <h:column>
             <f:facet name="header">X</f:facet>
             <h:outputText value="#{check.x}" />
