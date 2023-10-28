@@ -21,4 +21,12 @@
             <to-view-id>/main.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+
+    <!--    beans   -->
+<!--    <managed-bean>-->
+<!--        <managed-bean-name>pointBean</managed-bean-name>-->
+<!--        <managed-bean-class>com.itmo.weblab3.beans.PointBean</managed-bean-class>-->
+<!--        <managed-bean-scope>session</managed-bean-scope>-->
+<!--    </managed-bean>-->
+
 </faces-config>

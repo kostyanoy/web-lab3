@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
     <title>Main page</title>
     <meta charset="UTF-8"/>
@@ -10,7 +10,7 @@
 <h:body>
     <h:form id="mainForm">
         <div class="window">
-            <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
+            <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;" rendered="false">
                 <svg width="400" height="400">
                     <line x1="0" y1="200" x2="400" y2="200" style="stroke: black; stroke-width: 2"/>
                     <line x1="200" y1="0" x2="200" y2="400" style="stroke: black; stroke-width: 2"/>
@@ -37,8 +37,31 @@
                     <polygon points="80,200 200,200 200,260 80,260" style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
                 </svg>
             </p:outputPanel>
+
             <div class="inputFields">
             <!--тут будут поля ввода-->
+                <!--REPLACE-->
+                <div class="example">
+                    <h:form>
+                        <h:outputLabel for="x">Enter X:</h:outputLabel>
+                        <h:inputText id="x" value="#{pointBean.x}" />
+
+                        <h:outputLabel for="y">Enter Y:</h:outputLabel>
+                        <h:inputText id="y" value="#{pointBean.y}" />
+
+                        <h:outputLabel for="r">Select R:</h:outputLabel>
+                        <h:selectOneMenu id="r" value="#{pointBean.r}">
+                            <f:selectItem itemValue="1" itemLabel="1" />
+                            <f:selectItem itemValue="2" itemLabel="2" />
+                            <f:selectItem itemValue="3" itemLabel="3" />
+                        </h:selectOneMenu>
+
+                        <h:commandButton value="Submit" action="#{pointBean.savePoint}"/>
+                    </h:form>
+
+                    <h:commandButton value="Удалить" action="#{pointBean.deletePoints}" />
+                </div>
+                <!--REPLACE-->
             </div>
             <div class="mainButtons">
             <!--тут будут кнопки сенд и резет-->
@@ -46,6 +69,21 @@
         </div>
     </h:form>
 <!--тут будет таблица-->
+    <!--REPLACE-->
+    <h1>CheckEntity Table</h1>
+    <h:dataTable value="#{pointBean.points}" var="check">
+        <h:column>
+            <f:facet name="header">X</f:facet>
+            <h:outputText value="#{check.x}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">Y</f:facet>
+            <h:outputText value="#{check.y}" />
+        </h:column>
+        <!-- Add more columns for other properties -->
+        <!-- Example: X, Y, R, etc. -->
+    </h:dataTable>
+    <!--REPLACE-->
 </h:body>
 <h:outputScript name="js/buttonHandler.js"/>
 <h:outputScript name="js/validator.js"/>
