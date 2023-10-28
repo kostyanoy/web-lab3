@@ -18,7 +18,7 @@ body {
     text-align: center;
 }
 
-.button-container button {
+.button-container .main-button {
     font-family: Lato, Montserrat, sans-serif;
     display: inline-block;
     margin-top: 20px;
@@ -31,11 +31,11 @@ body {
     cursor: pointer;
 }
 
-.button-container button.active {
+.button-container .main-button.active {
     background-color: #d8c8bc;
 }
 
-.button-container button:hover {
+.button-container .main-button.hover {
     background-color: #744B0560;
 }
 
