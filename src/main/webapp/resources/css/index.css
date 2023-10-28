@@ -19,6 +19,7 @@ body {
 }
 
 .button-container .main-button {
+    font-size: 20px;
     font-family: Lato, Montserrat, sans-serif;
     display: inline-block;
     margin-top: 20px;
@@ -31,13 +32,6 @@ body {
     cursor: pointer;
 }
 
-.button-container .main-button.active {
-    background-color: #d8c8bc;
-}
-
-.button-container .main-button.hover {
-    background-color: #744B0560;
-}
 
 .clock {
     width: 300px;

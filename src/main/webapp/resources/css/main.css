@@ -4,10 +4,8 @@ body {
     margin-top: 20px;
     font-size: 20px;
 }
-
 .window {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-
     border: 2px solid #744b05;
     text-align: center;
     float: left;
@@ -19,53 +17,9 @@ body {
     padding: 10px;
     border-radius: 10px;
 }
-
 #coordinatePanel {
     margin-top: 10px;
     margin-left: 180px;
-}
-
-.inputFields {
-    display: flex;
-    flex-direction: column;
-    margin-top: 460px;
-}
-.chkbx {
-    font-family: Lato, Montserrat, sans-serif;
-    margin-top: 15px;
-    margin-left: 170px;
-    display: flex;
-    align-items: center;
-}
-
-.chkbx .ui-chkbox {
-    margin-right: 10px;
-}
-
-.chkbx label {
-    margin-right: 5px;
-}
-.inpt{
-    font-family: Lato, Montserrat, sans-serif;
-    border-radius: 10px;
-    margin-left: 170px;
-    margin-top: 15px;
-    display: flex;
-    align-items: center;}
-
-
-.back-button button{
-    font-family: Lato, Montserrat, sans-serif;
-    padding: 10px 20px;
-    background-color: #6c5443;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
 }
 .button-container button {
     font-family: Lato, Montserrat, sans-serif;
@@ -78,4 +32,70 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+table {
+    max-height: 500px;
+    overflow-y: auto;
+    float: right;
+    width: 45%;
+    margin-top: 70px;
+    margin-right: 50px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #886750;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+.back .back-button {
+    font-size: 20px;
+    font-family: Lato, Montserrat, sans-serif;
+    padding: 10px 20px;
+    background-color: #6c5443;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.inputFields {
+    font-size: 25px;
+    font-family: Lato, Montserrat, sans-serif;
+    display: flex;
+    flex-direction: column;
+    margin-top: 460px;
+}
+.select {
+    margin-top: 12px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+.select .slct{
+    margin-right: 10px;
+    width: 100px;
+    background-color: #d8c8bc;
+    color: #333;
+}
+.input{
+    border-radius: 10px;
+    margin-left: 30px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;}
+
+.input .inpt{
+    font-size: 15px;
+    margin-right: 10px;
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #d8c8bc;
 }

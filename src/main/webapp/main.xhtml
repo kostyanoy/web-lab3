@@ -8,83 +8,110 @@
     <h:outputStylesheet name="css/main.css"/>
 </h:head>
 <h:body>
-    <div class="window">
-        <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
-            <svg width="400" height="400">
-                <line x1="0" y1="200" x2="400" y2="200" style="stroke: black; stroke-width: 2"/>
-                <line x1="200" y1="0" x2="200" y2="400" style="stroke: black; stroke-width: 2"/>
-                <polygon points="400,200 390,195 390,205" style="fill: black"/>
-                <polygon points="200,0 195,10 205,10" style="fill: black"/>
-                <line x1="80" y1="195" x2="80" y2="205" style="stroke: black; stroke-width: 2"/>
-                <line x1="140" y1="195" x2="140" y2="205" style="stroke: black; stroke-width: 2"/>
-                <line x1="260" y1="195" x2="260" y2="205" style="stroke: black; stroke-width: 2"/>
-                <line x1="320" y1="195" x2="320" y2="205" style="stroke: black; stroke-width: 2"/>
-                <text x="75" y="220" font-size="12">-R</text>
-                <text x="135" y="220" font-size="12">-R/2</text>
-                <text x="255" y="220" font-size="12">R/2</text>
-                <text x="315" y="220" font-size="12">R</text>
-                <line x1="195" y1="80" x2="205" y2="80" style="stroke: black; stroke-width: 2"/>
-                <line x1="195" y1="140" x2="205" y2="140" style="stroke: black; stroke-width: 2"/>
-                <line x1="195" y1="260" x2="205" y2="260" style="stroke: black; stroke-width: 2"/>
-                <line x1="195" y1="320" x2="205" y2="320" style="stroke: black; stroke-width: 2"/>
-                <text x="180" y="85" font-size="12">R</text>
-                <text x="180" y="145" font-size="12">R/2</text>
-                <text x="180" y="265" font-size="12">-R/2</text>
-                <text x="180" y="325" font-size="12">-R</text>
-                <path d="M200,200 L200,80 A140,140 0 0,1 320,200 Z"
-                      style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
-                <polygon points="260,200 200,200 200,260"
-                         style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
-                <polygon points="80,200 200,200 200,260 80,260"
-                         style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
-            </svg>
-        </p:outputPanel>
-        <div class="inputFields">
-            <div class="chkbx">
-            <h:outputLabel value="X: " />
-            <p:selectBooleanCheckbox id="x1" value="" />
-            <label for="x1">-5</label>
-            <p:selectBooleanCheckbox id="x2" value="" />
-            <label for="x2">-4</label>
-            <p:selectBooleanCheckbox id="x3" value="" />
-            <label for="x3">-3</label>
-            <p:selectBooleanCheckbox id="x4" value="" />
-            <label for="x4">-2</label>
-            <p:selectBooleanCheckbox id="x5" value="" />
-            <label for="x5">-1</label>
-            <p:selectBooleanCheckbox id="x6" value="" />
-            <label for="x6">0</label>
-            <p:selectBooleanCheckbox id="x7" value="" />
-            <label for="x7">1</label>
+    <h:form id="mainForm">
+        <div class="window">
+            <p:outputPanel id="coordinatePanelWrapper"
+                           style="position: relative; margin-top: 10px; margin-left: 180px;">
+                <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
+                    <svg width="400" height="400">
+                        <line x1="0" y1="200" x2="400" y2="200" style="stroke: black; stroke-width: 2"/>
+                        <line x1="200" y1="0" x2="200" y2="400" style="stroke: black; stroke-width: 2"/>
+                        <polygon points="400,200 390,195 390,205" style="fill: black"/>
+                        <polygon points="200,0 195,10 205,10" style="fill: black"/>
+                        <line x1="80" y1="195" x2="80" y2="205" style="stroke: black; stroke-width: 2"/>
+                        <line x1="140" y1="195" x2="140" y2="205" style="stroke: black; stroke-width: 2"/>
+                        <line x1="260" y1="195" x2="260" y2="205" style="stroke: black; stroke-width: 2"/>
+                        <line x1="320" y1="195" x2="320" y2="205" style="stroke: black; stroke-width: 2"/>
+                        <text x="75" y="220" font-size="12">-R</text>
+                        <text x="135" y="220" font-size="12">-R/2</text>
+                        <text x="255" y="220" font-size="12">R/2</text>
+                        <text x="315" y="220" font-size="12">R</text>
+                        <line x1="195" y1="80" x2="205" y2="80" style="stroke: black; stroke-width: 2"/>
+                        <line x1="195" y1="140" x2="205" y2="140" style="stroke: black; stroke-width: 2"/>
+                        <line x1="195" y1="260" x2="205" y2="260" style="stroke: black; stroke-width: 2"/>
+                        <line x1="195" y1="320" x2="205" y2="320" style="stroke: black; stroke-width: 2"/>
+                        <text x="180" y="85" font-size="12">R</text>
+                        <text x="180" y="145" font-size="12">R/2</text>
+                        <text x="180" y="265" font-size="12">-R/2</text>
+                        <text x="180" y="325" font-size="12">-R</text>
+                        <path d="M200,200 L200,80 A140,140 0 0,1 320,200 Z"
+                              style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
+                        <polygon points="260,200 200,200 200,260"
+                                 style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
+                        <polygon points="80,200 200,200 200,260 80,260"
+                                 style="fill: rgba(225, 217, 206, 0.5); stroke: black; stroke-width: 2"/>
+                    </svg>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <div class="inputFields">
+                <div class="select">
+                    <h:outputLabel value="X:  "/>
+                    <p:selectOneMenu id="xSelect" value="#{pointBean.x}" styleClass="slct">
+                        <f:selectItem itemValue="-5" itemLabel="-5"/>
+                        <f:selectItem itemValue="-4" itemLabel="-4"/>
+                        <f:selectItem itemValue="-3" itemLabel="-3"/>
+                        <f:selectItem itemValue="-2" itemLabel="-2"/>
+                        <f:selectItem itemValue="-1" itemLabel="-1"/>
+                        <f:selectItem itemValue="0" itemLabel="0"/>
+                        <f:selectItem itemValue="1" itemLabel="1"/>
+                    </p:selectOneMenu>
+                </div>
+
+                <div class="input">
+                    <h:outputLabel value="Y:  ">
+                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt">
+                            <f:validateDoubleRange minimum="-3" maximum="3"/>
+                        </h:inputText>
+                    </h:outputLabel>
+                </div>
+                <div class="select">
+                    <h:outputLabel value="R: "/>
+                    <p:selectOneMenu id="rSelect" value="#{pointBean.r}" styleClass="slct">
+                        <f:selectItem itemValue="1" itemLabel="1"/>
+                        <f:selectItem itemValue="1.5" itemLabel="1.5"/>
+                        <f:selectItem itemValue="2" itemLabel="2"/>
+                        <f:selectItem itemValue="2.5" itemLabel="2.5"/>
+                        <f:selectItem itemValue="3" itemLabel="3"/>
+                    </p:selectOneMenu>
+                </div>
+
             </div>
-            <div class="inpt">
-            <h:outputLabel value="Y: ">
-                <h:inputText id="y" maxlength="3">
-                    <f:validateDoubleRange minimum="-3" maximum="3"/>
-                </h:inputText>
-            </h:outputLabel>
-            </div>
-            <div class="chkbx">
-            <h:outputLabel value="R: " />
-            <p:selectBooleanCheckbox id="r1" value="" />
-            <label for="r1">1</label>
-            <p:selectBooleanCheckbox id="r2" value="" />
-            <label for="r2">1.5</label>
-            <p:selectBooleanCheckbox id="r3" value="" />
-            <label for="r3">2</label>
-            <p:selectBooleanCheckbox id="r4" value="" />
-            <label for="r4">2.5</label>
-            <p:selectBooleanCheckbox id="r5" value="" />
-            <label for="r5">3</label>
+            <div class="button-container">
+                <p:commandButton value="Submit" action="#{pointBean.savePoint()}"/>
+                <p:commandButton value="Reset" action="#{pointBean.deletePoints()}"/>
             </div>
         </div>
-        <div class="button-container">
-            <p:commandButton value="Send"/>
-            <p:commandButton value="Reset"/>
-        </div>
-    </div>
-    <div class="back-button">
-        <h:button value="Back" outcome="toIndex"/>
+    </h:form>
+
+    <h:dataTable value="#{pointBean.receivePoints()}" var="check">
+        <h:column>
+            <f:facet name="header">X</f:facet>
+            <h:outputText value="#{check.x}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Y</f:facet>
+            <h:outputText value="#{check.x}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">R</f:facet>
+            <h:outputText value="#{check.y}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Result</f:facet>
+            <h:outputText value="#{check.result}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Time</f:facet>
+            <h:outputText value="#{check.checkDate}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">Script Time(ms)</f:facet>
+            <h:outputText value="#{check.executionTime}"/>
+        </h:column>
+    </h:dataTable>
+    <div class="back">
+        <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
 </h:body>
 </html>
