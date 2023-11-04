@@ -45,4 +45,17 @@ public class PointBean implements Serializable {
     public List<CheckEntity> receivePoints() {
         return checkManager.getAllPoints(sessionId);
     }
+    public String receiveJsonPoints() {
+        var json = new StringBuilder("[");
+        var points = receivePoints();
+        var l = points.size();
+        for (var i = 0; i < points.size(); i++){
+            json.append(points.get(i).toJson());
+            if (i != l - 1) {
+                json.append(",");
+            }
+        }
+        json.append("]");
+        return json.toString();
+    }
 }
