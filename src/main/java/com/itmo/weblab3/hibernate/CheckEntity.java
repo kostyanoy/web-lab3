@@ -32,6 +32,6 @@ public class CheckEntity implements Serializable {
     private boolean isDeleted;
 
     public String toJson() {
-        return String.format(Locale.US, "{\"x\": %.2f, \"y\": %.2f, \"r\": %.2f}", x, y, r);
+        return String.format(Locale.US, "{\"x\": %.2f, \"y\": %.2f, \"r\": %.2f, \"result\": %b}", x, y, r, result);
     }
 }
