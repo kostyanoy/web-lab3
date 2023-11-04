@@ -125,6 +125,11 @@
     function sendPoint() {
         send([{name: "x", value: 1}, {name: "y", value: 2}, {name: "r", value: 3}]);
     }
+
+    function getPoints() {
+        // USE ' ' to get string!!!!!!! vvvvvvv
+        console.log(JSON.parse('#{pointBean.receiveJsonPoints()}'));
+    }
     // EXAMPLE ^^^^^^^^^^^^^^^^
     function getNewXY() {
         const points = "#{pointBean.receivePoints()}"
