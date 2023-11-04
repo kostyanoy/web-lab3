@@ -6,7 +6,6 @@
     <title>Main page</title>
     <meta charset="UTF-8"/>
     <h:outputStylesheet name="css/main.css"/>
-    <h:outputScript name="js/point.js"/>
 </h:head>
 <h:body>
     <h:form id="mainForm">
@@ -14,7 +13,7 @@
             <p:outputPanel id="coordinatePanelWrapper"
                            style="position: relative; margin-top: 10px; margin-left: 180px;">
                 <p:outputPanel id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
-                    <svg width="400" height="400">
+                    <svg width="400" height="400" onclick="drawPoint(event)">
                         <line x1="0" y1="200" x2="400" y2="200" style="stroke: black; stroke-width: 2"/>
                         <line x1="200" y1="0" x2="200" y2="400" style="stroke: black; stroke-width: 2"/>
                         <polygon points="400,200 390,195 390,205" style="fill: black"/>
@@ -58,31 +57,28 @@
                         <f:selectItem itemValue="1" itemLabel="1"/>
                     </p:selectOneMenu>
                 </div>
-                <h:messages />
                 <div class="input">
                     <h:outputLabel value="Y:  ">
-                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt" converterMessage="Введите число!!" validatorMessage="Число должно быть от -3 до 3">
-                            <f:validateDoubleRange minimum="-3" maximum="3" />
+                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt">
+                            <f:validateDoubleRange minimum="-3" maximum="3"/>
                         </h:inputText>
-                        <p:message for="y" />
                     </h:outputLabel>
+                    <p:message for="y"/>
                 </div>
-
                 <div class="select">
                     <h:outputLabel value="R: "/>
-                    <p:selectOneMenu id="rSelect" value="#{pointBean.r}" styleClass="slct" onchange="changeR(this.value)">
-                        <f:selectItem itemValue="1" itemLabel="1" />
-                        <f:selectItem itemValue="1.5" itemLabel="1.5" />
-                        <f:selectItem itemValue="2" itemLabel="2" />
+                    <p:selectOneMenu id="rSelect" value="#{pointBean.r}" styleClass="slct"
+                                     onchange="changeR(this.value)">
+                        <f:selectItem itemValue="1" itemLabel="1"/>
+                        <f:selectItem itemValue="1.5" itemLabel="1.5"/>
+                        <f:selectItem itemValue="2" itemLabel="2"/>
                         <f:selectItem itemValue="2.5" itemLabel="2.5"/>
                         <f:selectItem itemValue="3" itemLabel="3"/>
                     </p:selectOneMenu>
-
                 </div>
-
             </div>
             <div class="button-container">
-                <p:commandButton value="Submit" action="#{pointBean.savePoint()}"/>
+                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" oncomplete="location.reload()" />
                 <p:commandButton value="Reset" action="#{pointBean.deletePoints()}"/>
             </div>
         </div>
@@ -95,11 +91,11 @@
         </h:column>
         <h:column>
             <f:facet name="header">Y</f:facet>
-            <h:outputText value="#{check.x}"/>
+            <h:outputText value="#{check.y}"/>
         </h:column>
         <h:column>
             <f:facet name="header">R</f:facet>
-            <h:outputText value="#{check.y}"/>
+            <h:outputText value="#{check.r}"/>
         </h:column>
         <h:column>
             <f:facet name="header">Result</f:facet>
@@ -118,5 +114,76 @@
         <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
 </h:body>
+<script type="text/javascript">
+    const svg = document.querySelector('svg');
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 
+    function getNewXY() {
+        const points = "#{pointBean.receivePoints()}"
+        const x = "#{pointBean.x}"
+        const y = "#{pointBean.y}";
+        const r = "#{pointBean.r}";
+        console.log(points);
+        console.log(x,y,r);
+        const width = 400;
+        const height = 400;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const cx = centerX + x * (width / (3.3 * r));
+        const cy = centerY - y * (height / (3.3 * r));
+        console.log(cx,cy)
+        setRound(svg, cx, cy);
+    }
+
+    window.onload = function () {
+        getNewXY();
+    };
+
+    function changeR(r) {
+        const elements = {
+            "Ry": r,
+            "R/2y": r / 2,
+            "-R/2y": -r / 2,
+            "-Ry": -r,
+            "Rx": -r,
+            "R/2x": -r / 2,
+            "-R/2x": r / 2,
+            "-Rx": r
+        };
+
+        for (const id in elements) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = elements[id] ? elements[id].toString() : "";
+            }
+        }
+    }
+
+    function drawPoint(event) {
+        const point = getXY(svg, event);
+        const xPoint = point.x;
+        const yPoint = point.y;
+
+        const existingPoints = svg.querySelectorAll("circle");
+        existingPoints.forEach((point) => {
+            point.parentNode.removeChild(point);
+        });
+console.log(xPoint,yPoint);
+        setRound(svg, xPoint, yPoint);
+    }
+    function getXY(svg, event) {
+        const rect = svg.getBoundingClientRect();
+        return {x: event.clientX - rect.left, y: event.clientY - rect.top};
+    }
+
+    function setRound(svg, cx, cy) {
+        circle.setAttribute("cx", cx);
+        circle.setAttribute("cy", cy);
+        circle.setAttribute("r", '5');
+        circle.setAttribute("fill", "red");
+        svg.appendChild(circle);
+    }
+
+
+</script>
 </html>

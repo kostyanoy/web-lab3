@@ -1,5 +1,6 @@
 const svg = document.getElementById('coordinate_plane');
 let xPoint, yPoint;
+
 function changeR(r) {
     const elements = {
         "Ry": r,
@@ -19,15 +20,32 @@ function changeR(r) {
         }
     }
 }
-function setRound(x, y) {
-    svg.insertAdjacentHTML("beforeend", `<circle r="5" cx="${x}" cy="${y}" fill="brown"></circle>`);
+
+
+function drawPoint(event) {
+    const svg = document.querySelector('svg');
+    const point = getXY(svg, event);
+    const xPoint = point.x;
+    const yPoint = point.y;
+
+    const existingPoints = svg.querySelectorAll("circle");
+    existingPoints.forEach((point) => {
+        svg.removeChild(point);
+    });
+
+    setRound(svg, xPoint, yPoint);
 }
-function getNewXY(x,y,r) {
-    const width = 400;
-    const height = 400;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const cx = centerX + x * (width / (3.3 * r));
-    const cy = centerY - y * (height / (3.3 * r));
-    setRound(cx, cy);
+
+function getXY(svg, event) {
+    const rect = svg.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+}
+
+function setRound(svg, cx, cy) {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", cx);
+    circle.setAttribute("cy", cy);
+    circle.setAttribute("r", 5);
+    circle.setAttribute("fill", "red");
+    svg.appendChild(circle);
 }
