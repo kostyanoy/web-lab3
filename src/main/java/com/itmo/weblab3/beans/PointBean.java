@@ -12,6 +12,7 @@ import com.itmo.weblab3.model.CheckManagerInterface;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 // bean for user input
 @Data
@@ -32,7 +33,7 @@ public class PointBean implements Serializable {
     private double x;
     private double y;
     private double r;
-    private boolean result;
+//    private boolean result;
 
     public boolean savePoint() {
         return checkManager.savePoint(this);
@@ -57,5 +58,21 @@ public class PointBean implements Serializable {
         }
         json.append("]");
         return json.toString();
+    }
+
+    public void sendJsPoint() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        try {
+            var x = Double.parseDouble(params.get("x"));
+            var y = Double.parseDouble(params.get("y"));
+            var r = Double.parseDouble(params.get("r"));
+            this.x = x;
+            this.y = y;
+            this.r = r;
+        } catch (NullPointerException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        savePoint();
     }
 }

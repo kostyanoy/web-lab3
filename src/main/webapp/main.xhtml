@@ -114,10 +114,18 @@
         <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
 </h:body>
+
+<p:remoteCommand name="send" action="#{pointBean.sendJsPoint}" />
+
 <script type="text/javascript">
     const svg = document.querySelector('svg');
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 
+    // EXAMPLE vvvvvvvvvvvvv
+    function sendPoint() {
+        send([{name: "x", value: 1}, {name: "y", value: 2}, {name: "r", value: 3}]);
+    }
+    // EXAMPLE ^^^^^^^^^^^^^^^^
     function getNewXY() {
         const points = "#{pointBean.receivePoints()}"
         const x = "#{pointBean.x}"
