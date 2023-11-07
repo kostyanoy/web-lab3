@@ -58,10 +58,8 @@
                     </p:selectOneMenu>
                 </div>
                 <div class="input">
-                    <h:outputLabel value="Y:  ">
-                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt">
-                            <f:validateDoubleRange minimum="-3" maximum="3"/>
-                        </h:inputText>
+                    <h:outputLabel value="Y: ">
+                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt" placeholder="Введите значение от -3 до 3"/>
                     </h:outputLabel>
                     <p:message for="y"/>
                 </div>
@@ -78,8 +76,8 @@
                 </div>
             </div>
             <div class="button-container">
-                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" oncomplete="location.reload()" />
-                <p:commandButton value="Reset" action="#{pointBean.deletePoints()}"/>
+                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" oncomplete="location.reload()"/>
+                <p:commandButton value="Reset" action="#{pointBean.deletePoints()}" onclick="clearSVG()"/>
             </div>
         </div>
     </h:form>
@@ -114,45 +112,47 @@
         <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
 </h:body>
-
-<p:remoteCommand name="send" action="#{pointBean.sendJsPoint}" />
+<p:remoteCommand name="send" action="#{pointBean.sendJsPoint}"/>
 
 <script type="text/javascript">
-    const svg = document.querySelector('svg');
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    function getPoint() {
+        let jsonString = '#{pointBean.receiveJsonPoints()}';
+        let points = JSON.parse(jsonString);
 
-    // EXAMPLE vvvvvvvvvvvvv
-    function sendPoint() {
-        send([{name: "x", value: 1}, {name: "y", value: 2}, {name: "r", value: 3}]);
+        points.forEach(point => {
+            const {x, y, r} = point;
+            const svg = document.querySelector('svg');
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            const width = 400;
+            const height = 400;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const cx = centerX + x * (width / (3.3 * r));
+            const cy = centerY - y * (height / (3.3 * r));
+            setRound(circle, cx, cy);
+            svg.appendChild(circle);
+        });
     }
-
-    function getPoints() {
-        // USE ' ' to get string!!!!!!! vvvvvvv
-        console.log(JSON.parse('#{pointBean.receiveJsonPoints()}'));
+    function setRound(circle, cx, cy) {
+        circle.setAttribute("cx", cx);
+        circle.setAttribute("cy", cy);
+        circle.setAttribute("r", '5');
+        circle.setAttribute("fill", "beige");
     }
-    // EXAMPLE ^^^^^^^^^^^^^^^^
-    function getNewXY() {
-        const points = "#{pointBean.receivePoints()}"
-        const x = "#{pointBean.x}"
-        const y = "#{pointBean.y}";
-        const r = "#{pointBean.r}";
-        console.log(points);
-        console.log(x,y,r);
-        const width = 400;
-        const height = 400;
-        const centerX = width / 2;
-        const centerY = height / 2;
-        const cx = centerX + x * (width / (3.3 * r));
-        const cy = centerY - y * (height / (3.3 * r));
-        console.log(cx,cy)
-        setRound(svg, cx, cy);
+    function clearSVG() {
+        const svg = document.querySelector('svg');
+        const circles = svg.querySelectorAll("circle");
+        circles.forEach(circle => {
+            svg.removeChild(circle);
+        });
     }
 
     window.onload = function () {
-        getNewXY();
+        getPoint();
     };
-
+    let globalR = 1;
     function changeR(r) {
+        globalR = r || 1;
         const elements = {
             "Ry": r,
             "R/2y": r / 2,
@@ -171,32 +171,38 @@
             }
         }
     }
-
     function drawPoint(event) {
-        const point = getXY(svg, event);
+        const r = globalR;
+        const svgDraw = document.querySelector('svg');
+        const point = getXY(svgDraw, event);
         const xPoint = point.x;
         const yPoint = point.y;
 
-        const existingPoints = svg.querySelectorAll("circle");
+        const existingPoints = svgDraw.querySelectorAll('circle');
         existingPoints.forEach((point) => {
             point.parentNode.removeChild(point);
         });
-console.log(xPoint,yPoint);
-        setRound(svg, xPoint, yPoint);
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        console.log(xPoint, yPoint);
+        setRound(circle, xPoint, yPoint);
+        svgDraw.appendChild(circle)
+        console.log(r)
+        const tempX = point.x - 200;
+        const tempY = 200 - point.y;
+        const temp = 120 / r;
+        const newX = (tempX / temp).toFixed(1);
+        const newY = (tempY / temp).toFixed(1);
+        console.log(newX, newY,r)
+        sendPoints(newX, newY, r);
     }
+function sendPoints(x,y,r){
+        if(send([{ name: "x", value: x }, { name: "y", value: y }, { name: "r", value: r }])){
+    location.reload();}
+}
     function getXY(svg, event) {
         const rect = svg.getBoundingClientRect();
         return {x: event.clientX - rect.left, y: event.clientY - rect.top};
     }
-
-    function setRound(svg, cx, cy) {
-        circle.setAttribute("cx", cx);
-        circle.setAttribute("cy", cy);
-        circle.setAttribute("r", '5');
-        circle.setAttribute("fill", "red");
-        svg.appendChild(circle);
-    }
-
-
 </script>
 </html>
