@@ -17,11 +17,13 @@ import java.util.List;
 @ApplicationScoped
 class CheckManager implements CheckManagerInterface {
 
+    // stub returned if no connection to db
     private static final List<CheckEntity> stub = new ArrayList<>() {{
         add(CheckEntity.builder().x(1).build());
         add(CheckEntity.builder().y(1).build());
     }};
 
+    // save new point of this session
     @Override
     public boolean savePoint(PointBean point) {
         if (!HibernateUtils.isActive()) {
@@ -62,6 +64,7 @@ class CheckManager implements CheckManagerInterface {
         }
     }
 
+    // delete all points in session
     @Override
     public boolean deletePoints(String sessionId) {
         if (!HibernateUtils.isActive()) {
@@ -69,7 +72,6 @@ class CheckManager implements CheckManagerInterface {
         }
 
         try (var session = HibernateUtils.getSessionFactory().openSession()) {
-
             // start transaction
             var transaction = session.beginTransaction();
 
@@ -90,6 +92,7 @@ class CheckManager implements CheckManagerInterface {
         }
     }
 
+    // return all points in session
     @Override
     public List<CheckEntity> getAllPoints(String sessionId) {
         if (!HibernateUtils.isActive()) {

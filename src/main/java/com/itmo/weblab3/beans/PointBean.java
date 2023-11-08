@@ -11,6 +11,7 @@ import lombok.Data;
 import com.itmo.weblab3.model.CheckManagerInterface;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,24 +30,35 @@ public class PointBean implements Serializable {
     @Inject
     private CheckManagerInterface checkManager;
     private String sessionId;
+    private List<CheckEntity> currentPoints = new ArrayList<>();
 
     private double x;
     private double y;
     private double r;
 //    private boolean result;
 
+    // save point to database
     public boolean savePoint() {
         return checkManager.savePoint(this);
     }
 
+    // delete points in this session
     public boolean deletePoints() {
         return checkManager.deletePoints(sessionId);
     }
 
-    public List<CheckEntity> receivePoints() {
-        return checkManager.getAllPoints(sessionId);
+    // cache points
+    public boolean updatePoints() {
+        currentPoints = checkManager.getAllPoints(sessionId);
+        return true;
     }
 
+    // return cached points
+    public List<CheckEntity> receivePoints() {
+        return currentPoints;
+    }
+
+    // generate json for ajax
     public String receiveJsonPoints() {
         var json = new StringBuilder("[");
         var points = receivePoints();
@@ -61,6 +73,7 @@ public class PointBean implements Serializable {
         return json.toString();
     }
 
+    // get point from ajax
     public void sendJsPoint() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         try {
