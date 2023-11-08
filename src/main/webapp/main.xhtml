@@ -59,9 +59,12 @@
                 </div>
                 <div class="input">
                     <h:outputLabel value="Y: ">
-                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt" placeholder="Введите значение от -3 до 3"/>
+                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt">
+                            <f:validateDoubleRange minimum="-3" maximum="3" />
+                            <p:message for="y"/>
+                        </h:inputText>
+                        <p:watermark for="y" value="Введите значение от -3 до 3" />
                     </h:outputLabel>
-                    <p:message for="y"/>
                 </div>
                 <div class="select">
                     <h:outputLabel value="R: "/>
@@ -74,10 +77,13 @@
                         <f:selectItem itemValue="3" itemLabel="3"/>
                     </p:selectOneMenu>
                 </div>
+                <div class="err-mess">
+                <p:message for="y" styleClass="error-message" showSummary="true" showDetail="false" style="color: #462904; background-color: #cab08f; border-radius: 5px;"/>
+                </div>
             </div>
             <div class="button-container">
-                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" oncomplete="location.reload()"/>
-                <p:commandButton value="Reset" action="#{pointBean.deletePoints()}" onclick="clearSVG()"/>
+                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" ajax="false" oncomplete="location.reload()"/>
+                <p:commandButton value="Reset" action="#{pointBean.deletePoints()}" ajax="false" onclick="clearSVG()"/>
             </div>
         </div>
     </h:form>
@@ -196,10 +202,10 @@
         console.log(newX, newY,r)
         sendPoints(newX, newY, r);
     }
-function sendPoints(x,y,r){
+    function sendPoints(x,y,r){
         if(send([{ name: "x", value: x }, { name: "y", value: y }, { name: "r", value: r }])){
-    location.reload();}
-}
+            location.reload();}
+    }
     function getXY(svg, event) {
         const rect = svg.getBoundingClientRect();
         return {x: event.clientX - rect.left, y: event.clientY - rect.top};
