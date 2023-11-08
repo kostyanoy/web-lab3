@@ -37,24 +37,28 @@ public class PointBean implements Serializable {
     private double r;
 //    private boolean result;
 
+    // save point to database
     public boolean savePoint() {
         return checkManager.savePoint(this);
     }
 
+    // delete points in this session
     public boolean deletePoints() {
         return checkManager.deletePoints(sessionId);
     }
 
+    // cache points
     public boolean updatePoints() {
-        System.out.println("HELLO FROM UPDATE POINTS@!!!!!!!!!!!!!!!!!!!!!");
         currentPoints = checkManager.getAllPoints(sessionId);
         return true;
     }
 
+    // return cached points
     public List<CheckEntity> receivePoints() {
         return currentPoints;
     }
 
+    // generate json for ajax
     public String receiveJsonPoints() {
         var json = new StringBuilder("[");
         var points = receivePoints();
@@ -69,6 +73,7 @@ public class PointBean implements Serializable {
         return json.toString();
     }
 
+    // get point from ajax
     public void sendJsPoint() {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         try {
