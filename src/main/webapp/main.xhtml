@@ -8,6 +8,11 @@
     <h:outputStylesheet name="css/main.css"/>
 </h:head>
 <h:body>
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{pointBean.updatePoints}" />
+    </f:metadata>
+
+
     <h:form id="mainForm">
         <div class="window">
             <p:outputPanel id="coordinatePanelWrapper"
