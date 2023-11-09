@@ -33,8 +33,9 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
-table {
-    max-height: 500px;
+
+.pTable {
+    max-height: 800px;
     overflow-y: auto;
     float: right;
     width: 45%;
@@ -44,11 +45,23 @@ table {
     border-radius: 10px;
     background-color: #886750;
 }
+#pointsTable {
+    color: #cccccc;
+    background-color: #886750;
+    font-family: Lato, Montserrat, sans-serif;}
 
-th, td {
+#pointsTable th {
+    text-align: center;
+    background-color: #886750;
+    color: #cccccc;
+}
+
+#pointsTable tr {
+    color: #cccccc;
+    text-align: center;
     border: 1px solid #ccc;
     padding: 8px;
-    text-align: center;
+    background-color: #886750;
 }
 .back .back-button {
     font-size: 20px;

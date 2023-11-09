@@ -95,28 +95,26 @@
             </div>
         </div>
     </h:form>
-    <h:dataTable value="#{pointBean.receivePoints()}" var="check">
-        <h:column>
-            <f:facet name="header">X</f:facet>
-            <h:outputText value="#{check.x}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">Y</f:facet>
-            <h:outputText value="#{check.y}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">R</f:facet>
-            <h:outputText value="#{check.r}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">Result</f:facet>
-            <h:outputText value="#{check.result}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">Time</f:facet>
-            <h:outputText value="#{check.checkDate}"/>
-        </h:column>
-    </h:dataTable>
+    <div class="pTable">
+    <p:dataTable id="pointsTable" var="check" value="#{pointBean.currentPoints}">
+        <p:column headerText="X">
+            <h:outputText value="#{check.x}" />
+        </p:column>
+        <p:column headerText="Y">
+            <h:outputText value="#{check.y}" />
+        </p:column>
+        <p:column headerText="R">
+            <h:outputText value="#{check.r}" />
+        </p:column>
+        <p:column headerText="Result">
+            <h:outputText value="#{check.result}" />
+        </p:column>
+        <p:column headerText="Time">
+            <h:outputText value="#{check.checkDate}" />
+        </p:column>
+    </p:dataTable>
+    </div>
+    <p:poll interval="5" listener="#{pointBean.updatePoints}" update="pointsTable" />
     <div class="back">
         <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
@@ -151,7 +149,6 @@
             } else {
                 showAlert("Точка не попадает в координатную ось");
             }
-
         });
     }
 
@@ -217,7 +214,6 @@
             }
         }
     }
-
     function drawPoint(event) {
         const r = globalR;
         const svgDraw = document.querySelector('svg');
@@ -239,15 +235,14 @@
         const newY = (tempY / temp).toFixed(1);
         sendPoints(newX, newY, r);
         check(newX, newY, r);
-        setRound(circle, xPoint, yPoint, r, flag);
-    }
+        setRound(circle, xPoint, yPoint, r, flag);}
 
     function sendPoints(x, y, r) {
         send([{name: "x", value: x}, {name: "y", value: y}, {name: "r", value: r}]);
-        setTimeout(function () {
+        getPoint();
+        setTimeout(() => {
             location.reload();
         }, 1000);
     }
-
 </script>
 </html>
