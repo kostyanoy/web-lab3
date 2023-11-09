@@ -9,7 +9,7 @@
 </h:head>
 <h:body>
     <f:metadata>
-        <f:event type="preRenderView" listener="#{pointBean.updatePoints}" />
+        <f:event type="preRenderView" listener="#{pointBean.updatePoints}"/>
     </f:metadata>
 
 
@@ -64,16 +64,16 @@
                 </div>
                 <div class="input">
                     <h:outputLabel value="Y: ">
-                        <h:inputText id="y" maxlength="3" value="#{pointBean.y}" styleClass="inpt">
-                            <f:validateDoubleRange minimum="-3" maximum="3" />
+                        <h:inputText id="y" maxlength="4" value="#{pointBean.y}" styleClass="inpt">
+                            <f:validateDoubleRange minimum="-3" maximum="3"/>
                             <p:message for="y"/>
                         </h:inputText>
-                        <p:watermark for="y" value="Введите значение от -3 до 3" />
+                        <p:watermark for="y" value="Введите значение от -3 до 3"/>
                     </h:outputLabel>
                 </div>
                 <div class="select">
                     <h:outputLabel value="R: "/>
-                    <p:selectOneMenu id="rSelect" value="#{pointBean.r}" styleClass="slct"
+                    <p:selectOneMenu id="rSelect" widgetVar="rVar" value="#{pointBean.r}" styleClass="slct"
                                      onchange="changeR(this.value)">
                         <f:selectItem itemValue="1" itemLabel="1"/>
                         <f:selectItem itemValue="1.5" itemLabel="1.5"/>
@@ -82,17 +82,19 @@
                         <f:selectItem itemValue="3" itemLabel="3"/>
                     </p:selectOneMenu>
                 </div>
+                <div id="alerts"> </div>
                 <div class="err-mess">
-                <p:message for="y" styleClass="error-message" showSummary="true" showDetail="false" style="color: #462904; background-color: #cab08f; border-radius: 5px;"/>
+                    <p:message for="y" styleClass="error-message" showSummary="true" showDetail="false"
+                               style="color: #462904; background-color: #cab08f; border-radius: 5px;"/>
                 </div>
             </div>
             <div class="button-container">
-                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" ajax="false" oncomplete="location.reload()"/>
+                <p:commandButton value="Submit" action="#{pointBean.savePoint()}" ajax="false"
+                                 oncomplete="location.reload()"/>
                 <p:commandButton value="Reset" action="#{pointBean.deletePoints()}" ajax="false" onclick="clearSVG()"/>
             </div>
         </div>
     </h:form>
-
     <h:dataTable value="#{pointBean.receivePoints()}" var="check">
         <h:column>
             <f:facet name="header">X</f:facet>
@@ -114,22 +116,23 @@
             <f:facet name="header">Time</f:facet>
             <h:outputText value="#{check.checkDate}"/>
         </h:column>
-        <h:column>
-            <f:facet name="header">Script Time(ms)</f:facet>
-            <h:outputText value="#{check.executionTime}"/>
-        </h:column>
     </h:dataTable>
     <div class="back">
         <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
 </h:body>
 <p:remoteCommand name="send" action="#{pointBean.sendJsPoint}"/>
-
 <script type="text/javascript">
+    let flag;
+    let globalR = 1;
+    alerts = document.getElementById('alerts');
+    const alertDiv = document.createElement('div');
+    window.onload = function () {
+        getPoint();
+    };
     function getPoint() {
         let jsonString = '#{pointBean.receiveJsonPoints()}';
         let points = JSON.parse(jsonString);
-
         points.forEach(point => {
             const {x, y, r} = point;
             const svg = document.querySelector('svg');
@@ -140,16 +143,18 @@
             const centerY = height / 2;
             const cx = centerX + x * (width / (3.3 * r));
             const cy = centerY - y * (height / (3.3 * r));
-            setRound(circle, cx, cy);
-            svg.appendChild(circle);
+            check(x, y, r);
+            let e = 0.00000000000001;
+            if (cx >= -e &amp;&amp; cx &lt;= width + e &amp;&amp; cy >= -e &amp;&amp; cy &lt;= height + e) {
+                setRound(circle, cx, cy, r, flag);
+                svg.appendChild(circle);
+            } else {
+                showAlert("Точка не попадает в координатную ось");
+            }
+
         });
     }
-    function setRound(circle, cx, cy) {
-        circle.setAttribute("cx", cx);
-        circle.setAttribute("cy", cy);
-        circle.setAttribute("r", '5');
-        circle.setAttribute("fill", "beige");
-    }
+
     function clearSVG() {
         const svg = document.querySelector('svg');
         const circles = svg.querySelectorAll("circle");
@@ -158,21 +163,51 @@
         });
     }
 
-    window.onload = function () {
-        getPoint();
-    };
-    let globalR = 1;
+    const showAlert = message => {
+        alertDiv.textContent = message;
+        alerts.appendChild(alertDiv);
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 2000);
+    }
+
+    function check(x, y, r) {
+        if ((x >= 0 &amp;&amp; y &lt;= 0 &amp;&amp; x &lt;= r / 2 &amp;&amp; y >= -r / 2) ||
+            (x &lt;= 0 &amp;&amp; y &lt;= 0 &amp;&amp; x >= -r &amp;&amp; y >= -r / 2) ||
+            (x >= 0 &amp;&amp; y >= 0 &amp;&amp; x &lt;= r &amp;&amp; y &lt;= r &amp;&amp; (Math.pow(x, 2) + Math.pow(y, 2) &lt;= Math.pow(r, 2)))) {
+            flag = "true";
+        } else {
+            flag = "false";
+        }
+    }
+
+    function setRound(circle, cx, cy, r, flag) {
+        circle.setAttribute("cx", cx);
+        circle.setAttribute("cy", cy);
+        circle.setAttribute("r", '5');
+        if (flag === "true") {
+            circle.setAttribute("fill", "beige");
+        } else {
+            circle.setAttribute("fill", "black");
+        }
+    }
+
+    function getXY(svg, event) {
+        const rect = svg.getBoundingClientRect();
+        return {x: event.clientX - rect.left, y: event.clientY - rect.top};
+    }
+
     function changeR(r) {
         globalR = r || 1;
         const elements = {
-            "Ry": r,
-            "R/2y": r / 2,
-            "-R/2y": -r / 2,
-            "-Ry": -r,
-            "Rx": -r,
-            "R/2x": -r / 2,
-            "-R/2x": r / 2,
-            "-Rx": r
+            "Ry": globalR,
+            "R/2y": globalR / 2,
+            "-R/2y": -globalR / 2,
+            "-Ry": -globalR,
+            "Rx": -globalR,
+            "R/2x": -globalR / 2,
+            "-R/2x": globalR / 2,
+            "-Rx": globalR
         };
 
         for (const id in elements) {
@@ -182,6 +217,7 @@
             }
         }
     }
+
     function drawPoint(event) {
         const r = globalR;
         const svgDraw = document.querySelector('svg');
@@ -193,27 +229,25 @@
         existingPoints.forEach((point) => {
             point.parentNode.removeChild(point);
         });
-
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        console.log(xPoint, yPoint);
-        setRound(circle, xPoint, yPoint);
+        setRound(circle, xPoint, yPoint, r);
         svgDraw.appendChild(circle)
-        console.log(r)
         const tempX = point.x - 200;
         const tempY = 200 - point.y;
         const temp = 120 / r;
         const newX = (tempX / temp).toFixed(1);
         const newY = (tempY / temp).toFixed(1);
-        console.log(newX, newY,r)
         sendPoints(newX, newY, r);
+        check(newX, newY, r);
+        setRound(circle, xPoint, yPoint, r, flag);
     }
-    function sendPoints(x,y,r){
-        if(send([{ name: "x", value: x }, { name: "y", value: y }, { name: "r", value: r }])){
-            location.reload();}
+
+    function sendPoints(x, y, r) {
+        send([{name: "x", value: x}, {name: "y", value: y}, {name: "r", value: r}]);
+        setTimeout(function () {
+            location.reload();
+        }, 1000);
     }
-    function getXY(svg, event) {
-        const rect = svg.getBoundingClientRect();
-        return {x: event.clientX - rect.left, y: event.clientY - rect.top};
-    }
+
 </script>
 </html>
