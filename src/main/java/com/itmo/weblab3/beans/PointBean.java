@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import com.itmo.weblab3.model.CheckManagerInterface;
+import org.primefaces.PrimeFaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
