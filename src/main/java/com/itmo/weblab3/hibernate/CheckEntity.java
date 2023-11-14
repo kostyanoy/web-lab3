@@ -17,7 +17,7 @@ import java.util.Locale;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table
+@Table(name="checkentity")
 public class CheckEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

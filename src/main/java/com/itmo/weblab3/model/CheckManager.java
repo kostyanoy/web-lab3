@@ -75,12 +75,19 @@ class CheckManager implements CheckManagerInterface {
             // start transaction
             var transaction = session.beginTransaction();
 
+//            //update entities
+//            var entities = getAllPoints(sessionId);
+//            for (var entity : entities) {
+//                entity.setDeleted(true);
+//                session.merge(entity);
+//            }
+
             //update entities
-            var entities = getAllPoints(sessionId);
-            for (var entity : entities) {
-                entity.setDeleted(true);
-                session.merge(entity);
-            }
+            String hqlUpdate = "update CheckEntity set isDeleted = :newValue where sessionId = :conditionValue";
+            int updatedEntities = session.createQuery(hqlUpdate)
+                    .setParameter("newValue", true)
+                    .setParameter("conditionValue", sessionId)
+                    .executeUpdate();
 
             // close transaction
             transaction.commit();

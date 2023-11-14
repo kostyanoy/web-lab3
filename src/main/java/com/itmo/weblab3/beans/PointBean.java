@@ -1,6 +1,7 @@
 package com.itmo.weblab3.beans;
 
 import com.itmo.weblab3.hibernate.CheckEntity;
+import com.itmo.weblab3.model.CheckManagerInterface;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -8,8 +9,6 @@ import jakarta.inject.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import com.itmo.weblab3.model.CheckManagerInterface;
-import org.primefaces.PrimeFaces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
