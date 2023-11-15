@@ -74,7 +74,7 @@
                 <div class="select">
                     <h:outputLabel value="R: "/>
                     <p:selectOneMenu id="rSelect" widgetVar="rVar" value="#{pointBean.r}" styleClass="slct"
-                                     onchange="changeR(this.value)">
+                                     onchange="changeR()">
                         <f:selectItem itemValue="1" itemLabel="1"/>
                         <f:selectItem itemValue="1.5" itemLabel="1.5"/>
                         <f:selectItem itemValue="2" itemLabel="2"/>
@@ -89,7 +89,7 @@
             </div>
             <div class="button-container">
                 <p:commandButton value="Submit" action="#{pointBean.savePoint()}" ajax="false"/>
-                <p:commandButton value="Reset" action="#{pointBean.deletePoints()}" ajax="false" onclick="clearSVG()"/>
+                <p:commandButton value="Reset" action="#{pointBean.deletePoints}" process="@this" update="coordinatePanel pointsTable" onstart="clearSVG(); points=[]" oncomplete="changeR()"/>
             </div>
         </div>
     </h:form>
@@ -116,31 +116,49 @@
         <h:button value="Back" outcome="toIndex" styleClass="back-button"/>
     </div>
 </h:body>
-<p:remoteCommand name="send" action="#{pointBean.sendJsPoint}"/>
+<p:remoteCommand name="send" action="#{pointBean.sendJsPoint}" update="pointsTable"/>
 <script type="text/javascript">
-    let flag;
-    let globalR = 1;
+    let flag
+    let data = '#{pointBean.receiveJsonPoints()}';
+    let points = JSON.parse(data);
+    let rSelect = document.getElementById("mainForm:rSelect_input");
+    let yInput = document.getElementById("mainForm:y");
+    alerts = document.getElementById('alerts');
     window.onload = function () {
+        changeCorrectY();
+        changeR();
         getPoint();
     };
 
+    function changeCorrectY() {
+        let y = yInput.value;
+        if (y > 3.00) {
+            yInput.value = 3.00;
+        } else if (y &lt; -3.00) {
+            yInput.value = -3.00;
+        }
+    }
+
     function getPoint() {
-        let jsonString = '#{pointBean.receiveJsonPoints()}';
-        let points = JSON.parse(jsonString);
+        clearSVG();
         points.forEach(point => {
             const {x, y, r} = point;
-            const svg = document.querySelector('svg');
-            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            const width = 400;
-            const height = 400;
-            const centerX = width / 2;
-            const centerY = height / 2;
-            const cx = centerX + x * (width / (3.3 * r));
-            const cy = centerY - y * (height / (3.3 * r));
-            check(x, y, r);
-            setRound(circle, cx, cy, r, flag);
-            svg.appendChild(circle);
+            calculator(x, y, r);
         });
+    }
+
+    function calculator(x, y, r) {
+        const svg = document.querySelector('svg');
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        const width = 400;
+        const height = 400;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const cx = centerX + x * (width / (3.3 * r));
+        const cy = centerY - y * (height / (3.3 * r));
+        check(x, y, r);
+        setRound(circle, cx, cy, r, flag);
+        svg.appendChild(circle);
     }
 
     function clearSVG() {
@@ -150,7 +168,6 @@
             svg.removeChild(circle);
         });
     }
-
 
     function check(x, y, r) {
         if ((x >= 0 &amp;&amp; y &lt;= 0 &amp;&amp; x &lt;= r / 2 &amp;&amp; y >= -r / 2) ||
@@ -178,19 +195,19 @@
         return {x: event.clientX - rect.left, y: event.clientY - rect.top};
     }
 
-    function changeR(r) {
-        globalR = r || 1;
+    function changeR() {
+        let r = rSelect.value;
+        console.log(r)
         const elements = {
-            "Ry": globalR,
-            "R/2y": globalR / 2,
-            "-R/2y": -globalR / 2,
-            "-Ry": -globalR,
-            "Rx": -globalR,
-            "R/2x": -globalR / 2,
-            "-R/2x": globalR / 2,
-            "-Rx": globalR
+            "Ry": r,
+            "R/2y": r / 2,
+            "-R/2y": -r / 2,
+            "-Ry": -r,
+            "Rx": -r,
+            "R/2x": -r / 2,
+            "-R/2x": r / 2,
+            "-Rx": r
         };
-
         for (const id in elements) {
             const element = document.getElementById(id);
             if (element) {
@@ -199,35 +216,24 @@
         }
     }
 
+
     function drawPoint(event) {
-        const r = globalR;
+        let r = rSelect.value;
         const svgDraw = document.querySelector('svg');
         const point = getXY(svgDraw, event);
-        const xPoint = point.x;
-        const yPoint = point.y;
-
-        const existingPoints = svgDraw.querySelectorAll('circle');
-        existingPoints.forEach((point) => {
-            point.parentNode.removeChild(point);
-        });
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        setRound(circle, xPoint, yPoint, r);
-        svgDraw.appendChild(circle)
         const tempX = point.x - 200;
         const tempY = 200 - point.y;
         const temp = 120 / r;
         const newX = (tempX / temp).toFixed(1);
         const newY = (tempY / temp).toFixed(1);
         sendPoints(newX, newY, r);
-        check(newX, newY, r);
-        setRound(circle, xPoint, yPoint, r, flag);
+        calculator(newX,newY,r);
     }
-
     function sendPoints(x, y, r) {
         send([{name: "x", value: x}, {name: "y", value: y}, {name: "r", value: r}]);
+        check(x, y, r);
+        points.push({x, y, r, flag})
         getPoint();
-        setTimeout(() =>
-            location.reload(), 200);
     }
 </script>
 </html>

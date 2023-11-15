@@ -45,6 +45,7 @@ public class PointBean implements Serializable {
 
     // delete points in this session
     public boolean deletePoints() {
+        currentPoints = new ArrayList<>();
         return checkManager.deletePoints(sessionId);
     }
 
