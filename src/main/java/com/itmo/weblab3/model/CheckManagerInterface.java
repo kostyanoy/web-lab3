@@ -14,5 +14,5 @@ public interface CheckManagerInterface {
     boolean deletePoints(String sessionId);
 
     //get all points with gives session id
-    List<CheckEntity> getAllPoints(String sessionId);
+    List<CheckEntity> getPoints(String sessionId, int offset, int limit);
 }

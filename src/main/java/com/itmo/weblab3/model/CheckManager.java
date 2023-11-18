@@ -101,7 +101,7 @@ class CheckManager implements CheckManagerInterface {
 
     // return all points in session
     @Override
-    public List<CheckEntity> getAllPoints(String sessionId) {
+    public List<CheckEntity> getPoints(String sessionId, int offset, int limit) {
         if (!HibernateUtils.isActive()) {
             return stub;
         }
@@ -122,7 +122,10 @@ class CheckManager implements CheckManagerInterface {
             query.select(root).where(condition);
 
             // select list
-            var resultList = session.createQuery(query).getResultList();
+            var resultList = session.createQuery(query)
+                    .setFirstResult(offset) // set offset
+                    .setMaxResults(limit) // set limit
+                    .getResultList();
 
             return resultList;
         } catch (HibernateException | IllegalAccessError e) {

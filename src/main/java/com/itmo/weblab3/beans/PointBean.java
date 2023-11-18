@@ -23,6 +23,8 @@ import java.util.Map;
 @SessionScoped
 public class PointBean implements Serializable {
 
+    int POINTS_PER_PAGE = 10;
+
     public PointBean() {
         sessionId = FacesContext.getCurrentInstance().getExternalContext().getSessionId(true);
     }
@@ -35,6 +37,7 @@ public class PointBean implements Serializable {
     private double x;
     private double y;
     private double r;
+    private int pageNumber = 1; // current page number
 //    private boolean result;
 
     // save point to database
@@ -50,7 +53,8 @@ public class PointBean implements Serializable {
 
     // cache points
     public boolean updatePoints() {
-        currentPoints = checkManager.getAllPoints(sessionId);
+        int offset = (pageNumber - 1) * POINTS_PER_PAGE;
+        currentPoints = checkManager.getPoints(sessionId, offset, POINTS_PER_PAGE);
         return true;
     }
 
